@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+
+# Downloaded data
+/data/*.zip
+
+# Generated map
+/map.svg
