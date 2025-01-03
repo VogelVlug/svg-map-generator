@@ -18,8 +18,8 @@
     "butterfly",
     "projection"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "Markus Vogel markus@vogelvlug.de",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "d3-geo": "^3.1.0",
     "d3-geo-projection": "^4.0.0",
