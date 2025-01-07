@@ -36,11 +36,33 @@ export async function generateMap(options) {
   }
   const path = geoPath().projection(proj);
   
-  // Add graticules
+  // Create defs for clip path
+  const defs = svg.append('defs');
+  
+  // Add sphere path and use it for clipping
+  defs.append('path')
+    .datum({type: 'Sphere'})
+    .attr('id', 'sphere')
+    .attr('d', path);
+  
+  defs.append('clipPath')
+    .attr('id', 'clip')
+    .append('use')
+    .attr('href', '#sphere');
+  
+  // Add sphere stroke and fill
+  svg.append('use')
+    .attr('href', '#sphere')
+    .attr('fill', 'none')
+    .attr('stroke', '#000')
+    .attr('stroke-width', '0.5');
+  
+  // Add graticules with clip path
   const graticule = geoGraticule().step([15, 15]);
   svg.append('path')
     .datum(graticule())
     .attr('d', path)
+    .attr('clip-path', 'url(#clip)')
     .attr('fill', 'none')
     .attr('stroke', '#666')
     .attr('stroke-width', '0.5')
@@ -49,10 +71,11 @@ export async function generateMap(options) {
   // Load and process map data
   const mapData = await loadDataset(mapdata);
   
-  // Add map path
+  // Add map path with clip path
   svg.append('path')
     .datum(mapData)
     .attr('d', path)
+    .attr('clip-path', 'url(#clip)')
     .attr('fill', 'none')
     .attr('stroke', 'black')
     .attr('stroke-width', '1');
