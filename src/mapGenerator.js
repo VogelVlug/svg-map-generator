@@ -126,20 +126,22 @@ function applyBounds(projection, bounds) {
     throw new Error('Invalid bounds format. Expected: minLat,maxLat,minLon,maxLon');
   }
   
+  const boundingBox = {
+    type: "Feature",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [minLon, minLat],  
+        [minLon, maxLat],  
+        [maxLon, maxLat],  
+        [maxLon, minLat],  
+        [minLon, minLat]
+      ]]
+    }
+  };
+
   projection.fitExtent(
     [[0, 0], [WIDTH, HEIGHT]],
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [[
-          [minLon, minLat],
-          [maxLon, minLat],
-          [maxLon, maxLat],
-          [minLon, maxLat],
-          [minLon, minLat]
-        ]]
-      }
-    }
+    boundingBox
   );
 } 
