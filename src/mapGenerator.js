@@ -14,7 +14,7 @@ const HEIGHT = 800;
  * @returns {Promise<string>} Generated SVG content
  */
 export async function generateMap(options) {
-  const { projection = 'WB', mapdata = '50mcoast', output = 'map.svg', centre, bounds } = options;
+  const { projection = 'WB', mapdata = '50mcoastline', output = 'map.svg', center, bounds } = options;
   
   // Create D3 node instance
   const d3n = new D3Node();
@@ -24,7 +24,7 @@ export async function generateMap(options) {
     .attr('viewBox', `0 0 ${WIDTH} ${HEIGHT}`);
   
   // Set up projection
-  const proj = setupProjection(projection, centre);
+  const proj = setupProjection(projection, center);
   if (bounds) {
     applyBounds(proj, bounds);
   }
@@ -84,10 +84,10 @@ export async function generateMap(options) {
 /**
  * Set up the map projection based on the specified type
  * @param {string} projectionType Type of projection to use
- * @param {string} centre Optional center point (format: "lat,lon")
+ * @param {string} center Optional center point (format: "lat,lon")
  * @returns {Object} Configured projection
  */
-function setupProjection(projectionType, centre) {
+function setupProjection(projectionType, center) {
   let proj;
   
   switch (projectionType.toUpperCase()) {
@@ -105,8 +105,8 @@ function setupProjection(projectionType, centre) {
       throw new Error(`Unsupported projection type: ${projectionType}`);
   }
   
-  if (centre) {
-    const [lat, lon] = centre.split(',').map(Number);
+  if (center) {
+    const [lat, lon] = center.split(',').map(Number);
     if (!isNaN(lat) && !isNaN(lon)) {
       proj.center([lon, lat]);
     }

@@ -58,7 +58,7 @@ npm start -- --projection WB --mapdata 50mcoastline
   - 110mcoastline: Natural Earth 110m resolution coastline
   - 50mlakes: Natural Earth 50m resolution lakes
   - 110mlakes: Natural Earth 110m resolution lakes
-- `--centre`: Center point for the projection (format: lat,lon)
+- `--center`: Center point for the projection (format: lat,lon)
 - `--bounds`: Bounding box for the map (format: minLat,maxLat,minLon,maxLon)
 - `--output`: Output file name (default: "map.svg")
 
