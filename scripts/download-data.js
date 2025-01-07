@@ -8,8 +8,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
 const DATASETS = {
-  '50mcoast': 'https://naciscdn.org/naturalearth/50m/physical/ne_50m_coastline.zip',
-  '110mcoast': 'https://naciscdn.org/naturalearth/110m/physical/ne_110m_coastline.zip'
+  '50mcoastline': 'https://naciscdn.org/naturalearth/50m/physical/ne_50m_coastline.zip',
+  '110mcoastline': 'https://naciscdn.org/naturalearth/110m/physical/ne_110m_coastline.zip',
+  '50mlakes': 'https://naciscdn.org/naturalearth/50m/physical/ne_50m_lakes.zip',
+  '110mlakes': 'https://naciscdn.org/naturalearth/110m/physical/ne_110m_lakes.zip'
 };
 
 async function ensureDataDir() {

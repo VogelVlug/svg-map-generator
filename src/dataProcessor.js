@@ -7,8 +7,19 @@ import shapefile from 'shapefile';
 const DATA_DIR = path.join(process.cwd(), 'data');
 
 /**
+ * Extract resolution and data type from dataset name
+ * @param {string} dataset Dataset name (e.g., '50mcoastline', '110mlakes')
+ * @returns {{resolution: string, dataType: string}} Resolution and data type
+ */
+function parseDatasetName(dataset) {
+  const resolution = dataset.slice(0, 3); // '50m' or '110m'
+  const dataType = dataset.slice(3);      // 'coastline' or 'lakes'
+  return { resolution, dataType };
+}
+
+/**
  * Process and load the specified Natural Earth dataset
- * @param {string} dataset Name of the dataset to load (e.g., '50mcoast')
+ * @param {string} dataset Name of the dataset to load (e.g., '50mcoastline', '50mlakes')
  * @returns {Promise<Object>} GeoJSON data
  */
 export async function loadDataset(dataset) {
@@ -52,8 +63,8 @@ export async function loadDataset(dataset) {
     }
     
     // Find the .shp file
-    const resolution = dataset.replace('coast', '');
-    const shpFile = path.join(tempDir, `ne_${resolution}_coastline.shp`);
+    const { resolution, dataType } = parseDatasetName(dataset);
+    const shpFile = path.join(tempDir, `ne_${resolution}_${dataType}.shp`);
     console.log('Looking for shapefile at:', shpFile);
     
     // Read the shapefile
