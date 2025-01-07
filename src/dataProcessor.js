@@ -12,8 +12,8 @@ const DATA_DIR = path.join(process.cwd(), 'data');
  * @returns {{resolution: string, dataType: string}} Resolution and data type
  */
 function parseDatasetName(dataset) {
-  const resolution = dataset.slice(0, 3); // '50m' or '110m'
-  const dataType = dataset.slice(3);      // 'coastline' or 'lakes'
+  const resolution = dataset.slice(0, 3);
+  const dataType = dataset.slice(3);
   return { resolution, dataType };
 }
 

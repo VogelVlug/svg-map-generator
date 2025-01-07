@@ -1,5 +1,5 @@
 import { geoGraticule, geoPath } from 'd3-geo';
-import { geoPolyhedralWaterman as geoWaterman } from 'd3-geo-projection';
+import { geoPolyhedralWaterman as geoWaterman, geoWinkel3 } from 'd3-geo-projection';
 import { D3Node } from 'd3-node';
 import fs from 'fs/promises';
 import { loadDataset } from './dataProcessor.js';
@@ -100,6 +100,11 @@ function setupProjection(projectionType, centre) {
     case 'WB':
       proj = geoWaterman()
         .scale(WIDTH / 10)
+        .translate([WIDTH / 2, HEIGHT / 2]);
+      break;
+    case 'W3':
+      proj = geoWinkel3()
+        .scale(WIDTH / 6)  // Winkel Tripel typically needs a different scale
         .translate([WIDTH / 2, HEIGHT / 2]);
       break;
     default:
