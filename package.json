@@ -21,11 +21,12 @@
   "author": "Markus Vogel markus@vogelvlug.de",
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "adm-zip": "^0.5.10",
+    "commander": "^11.0.0",
     "d3-geo": "^3.1.0",
     "d3-geo-projection": "^4.0.0",
-    "commander": "^11.0.0",
-    "jsdom": "^22.1.0",
-    "adm-zip": "^0.5.10",
+    "d3-node": "^4.0.1",
+    "d3-selection": "^3.0.0",
     "node-fetch": "^3.3.2",
     "shapefile": "^0.6.6"
   },

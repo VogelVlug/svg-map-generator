@@ -1,7 +1,7 @@
 import { geoGraticule, geoPath } from 'd3-geo';
 import { geoPolyhedralWaterman as geoWaterman } from 'd3-geo-projection';
+import { D3Node } from 'd3-node';
 import fs from 'fs/promises';
-import { JSDOM } from 'jsdom';
 import { loadDataset } from './dataProcessor.js';
 
 // Constants for SVG dimensions
@@ -16,22 +16,18 @@ const HEIGHT = 800;
 export async function generateMap(options) {
   const { projection = 'WB', mapdata = '50mcoast', output = 'map.svg', centre, bounds } = options;
   
-  // Create virtual DOM for SVG manipulation
-  const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
-  const document = dom.window.document;
+  // Create D3 node instance
+  const d3n = new D3Node();
   
-  // Create SVG element with white background
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', WIDTH);
-  svg.setAttribute('height', HEIGHT);
-  svg.setAttribute('viewBox', `0 0 ${WIDTH} ${HEIGHT}`);
+  // Create SVG using D3
+  const svg = d3n.createSVG(WIDTH, HEIGHT)
+    .attr('viewBox', `0 0 ${WIDTH} ${HEIGHT}`);
   
   // Add white background
-  const background = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  background.setAttribute('width', '100%');
-  background.setAttribute('height', '100%');
-  background.setAttribute('fill', 'white');
-  svg.appendChild(background);
+  svg.append('rect')
+    .attr('width', '100%')
+    .attr('height', '100%')
+    .attr('fill', 'white');
   
   // Set up projection
   const proj = setupProjection(projection, centre);
@@ -40,29 +36,29 @@ export async function generateMap(options) {
   }
   const path = geoPath().projection(proj);
   
-  // Add graticules (grid lines) using D3's built-in graticule generator
+  // Add graticules
   const graticule = geoGraticule().step([15, 15]);
-  const graticulePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  graticulePath.setAttribute('d', path(graticule()));
-  graticulePath.setAttribute('fill', 'none');
-  graticulePath.setAttribute('stroke', '#666');
-  graticulePath.setAttribute('stroke-width', '0.5');
-  graticulePath.setAttribute('stroke-dasharray', '2,2');
-  svg.appendChild(graticulePath);
+  svg.append('path')
+    .datum(graticule())
+    .attr('d', path)
+    .attr('fill', 'none')
+    .attr('stroke', '#666')
+    .attr('stroke-width', '0.5')
+    .attr('stroke-dasharray', '2,2');
   
   // Load and process map data
   const mapData = await loadDataset(mapdata);
   
-  // Create path element for the map
-  const mapPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  mapPath.setAttribute('d', path(mapData));
-  mapPath.setAttribute('fill', 'none');
-  mapPath.setAttribute('stroke', 'black');
-  mapPath.setAttribute('stroke-width', '1');
-  svg.appendChild(mapPath);
+  // Add map path
+  svg.append('path')
+    .datum(mapData)
+    .attr('d', path)
+    .attr('fill', 'none')
+    .attr('stroke', 'black')
+    .attr('stroke-width', '1');
   
-  // Save the SVG to file
-  const svgContent = svg.outerHTML;
+  // Get SVG content and save to file
+  const svgContent = d3n.svgString();
   await fs.writeFile(output, svgContent, 'utf8');
   
   return svgContent;
