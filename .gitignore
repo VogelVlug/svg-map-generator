@@ -7,5 +7,5 @@ node_modules/
 # Downloaded data
 /data/*.zip
 
-# Generated map
-/map.svg
+# Generated maps
+/*.svg
