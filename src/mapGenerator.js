@@ -23,12 +23,6 @@ export async function generateMap(options) {
   const svg = d3n.createSVG(WIDTH, HEIGHT)
     .attr('viewBox', `0 0 ${WIDTH} ${HEIGHT}`);
   
-  // Add white background
-  svg.append('rect')
-    .attr('width', '100%')
-    .attr('height', '100%')
-    .attr('fill', 'white');
-  
   // Set up projection
   const proj = setupProjection(projection, centre);
   if (bounds) {
@@ -53,7 +47,7 @@ export async function generateMap(options) {
   // Add sphere stroke and fill
   svg.append('use')
     .attr('href', '#sphere')
-    .attr('fill', 'none')
+    .attr('fill', '#fff')
     .attr('stroke', '#000')
     .attr('stroke-width', '0.5');
   
