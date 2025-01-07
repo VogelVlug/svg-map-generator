@@ -45,7 +45,7 @@ Specify projection and dataset:
 yarn start --projection WB --mapdata 50mcoastline
 
 # Using npm
-npm start --projection WB --mapdata 50mcoastline
+npm start -- --projection WB --mapdata 50mcoastline
 ```
 
 ### Available Options
