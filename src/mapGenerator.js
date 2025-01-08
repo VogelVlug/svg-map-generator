@@ -108,7 +108,7 @@ function setupProjection(projectionType, center) {
   if (center) {
     const [lat, lon] = center.split(',').map(Number);
     if (!isNaN(lat) && !isNaN(lon)) {
-      proj.center([lon, lat]);
+      proj.rotate([lon, lat, 0]);
     }
   }
   
