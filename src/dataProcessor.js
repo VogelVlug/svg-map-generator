@@ -12,9 +12,14 @@ const DATA_DIR = path.join(process.cwd(), 'data');
  * @returns {{resolution: string, dataType: string}} Resolution and data type
  */
 function parseDatasetName(dataset) {
-  const resolution = dataset.slice(0, 3);
-  const dataType = dataset.slice(3);
-  return { resolution, dataType };
+  const match = dataset.match(/^(\d+m)(.*)/);
+  if (!match) {
+    throw new Error(`Invalid dataset name format: ${dataset}`);
+  }
+  return {
+    resolution: match[1],    
+    dataType: match[2]
+  };
 }
 
 /**
