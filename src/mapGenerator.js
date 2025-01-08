@@ -16,6 +16,9 @@ const HEIGHT = 800;
 export async function generateMap(options) {
   const { projection = 'WB', mapdata = '50mcoastline', output = 'map.svg', center, bounds } = options;
   
+  // Parse comma-separated datasets
+  const datasets = mapdata.split(',').map(d => d.trim());
+  
   // Create D3 node instance
   const d3n = new D3Node();
   
@@ -62,17 +65,19 @@ export async function generateMap(options) {
     .attr('stroke-width', '0.5')
     .attr('stroke-dasharray', '2,2');
   
-  // Load and process map data
-  const mapData = await loadDataset(mapdata);
-  
-  // Add map path with clip path
-  svg.append('path')
-    .datum(mapData)
-    .attr('d', path)
-    .attr('clip-path', 'url(#clip)')
-    .attr('fill', 'none')
-    .attr('stroke', 'black')
-    .attr('stroke-width', '1');
+  // Load and process all map data
+  for (const dataset of datasets) {
+    const mapData = await loadDataset(dataset);
+    
+    // Add map path with clip path
+    svg.append('path')
+      .datum(mapData)
+      .attr('d', path)
+      .attr('clip-path', 'url(#clip)')
+      .attr('fill', 'none')
+      .attr('stroke', 'black')
+      .attr('stroke-width', '1');
+  }
   
   // Get SVG content and save to file
   const svgContent = d3n.svgString();
