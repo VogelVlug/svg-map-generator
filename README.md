@@ -14,6 +14,7 @@ Generate vector-based maps of Earth in SVG format using configurable projections
 - Configurable projection parameters
 - SVG output format
 - Multiple dataset support (combine coastlines and lakes)
+- Customizable styling options
 
 ## Installation
 
@@ -58,6 +59,15 @@ yarn start --projection W3 --mapdata 50mcoastline,50mlakes
 npm start -- --projection W3 --mapdata 50mcoastline,50mlakes
 ```
 
+Customize map styling:
+```bash
+# Using yarn
+yarn start --styling linethickness=2,linecolor=blue,background=lightgray
+
+# Using npm
+npm start -- --styling linethickness=2,linecolor=blue,background=lightgray
+```
+
 ### Available Options
 
 - `--projection`: Map projection type (default: "WB")
@@ -71,6 +81,13 @@ npm start -- --projection W3 --mapdata 50mcoastline,50mlakes
 - `--center`: Center point for the projection (format: lat,lon)
 - `--bounds`: Bounding box for the map (format: minLat,maxLat,minLon,maxLon)
 - `--output`: Output file name (default: "map.svg")
+- `--styling`: Comma-separated list of style options
+  - linethickness: Thickness of map data lines (default: "1")
+  - linecolor: Color of map data lines (default: "black")
+  - outlinethickness: Thickness of projection outline (default: "0.5")
+  - outlinecolor: Color of projection outline (default: "black")
+  - showgraticules: Show grid lines (default: "true")
+  - background: Background color of the projection (default: "white")
 
 ## Data Sources
 

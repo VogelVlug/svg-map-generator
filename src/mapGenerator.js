@@ -8,6 +8,16 @@ import { loadDataset } from './dataProcessor.js';
 const WIDTH = 1200;
 const HEIGHT = 800;
 
+// Default styles
+const DEFAULT_STYLES = {
+  linethickness: '1',
+  linecolor: 'black',
+  outlinethickness: '0.5',
+  outlinecolor: 'black',
+  showgraticules: 'true',
+  background: 'white'
+};
+
 /**
  * Generate an SVG map based on the provided options
  * @param {Object} options Configuration options for map generation
@@ -18,6 +28,9 @@ export async function generateMap(options) {
   
   // Parse comma-separated datasets
   const datasets = mapdata.split(',').map(d => d.trim());
+  
+  // Merge default styles with provided styles
+  const styles = { ...DEFAULT_STYLES, ...(options.styles || {}) };
   
   // Create D3 node instance
   const d3n = new D3Node();
@@ -47,23 +60,25 @@ export async function generateMap(options) {
     .append('use')
     .attr('href', '#sphere');
   
-  // Add sphere stroke and fill
+  // Add background
   svg.append('use')
     .attr('href', '#sphere')
-    .attr('fill', '#fff')
-    .attr('stroke', '#000')
-    .attr('stroke-width', '0.5');
+    .attr('fill', styles.background)
+    .attr('stroke', styles.outlinecolor)
+    .attr('stroke-width', styles.outlinethickness);
   
-  // Add graticules with clip path
-  const graticule = geoGraticule().step([15, 15]);
-  svg.append('path')
-    .datum(graticule())
-    .attr('d', path)
-    .attr('clip-path', 'url(#clip)')
-    .attr('fill', 'none')
-    .attr('stroke', '#666')
-    .attr('stroke-width', '0.5')
-    .attr('stroke-dasharray', '2,2');
+  // Add graticules with clip path if enabled
+  if (styles.showgraticules.toLowerCase() === 'true') {
+    const graticule = geoGraticule().step([15, 15]);
+    svg.append('path')
+      .datum(graticule())
+      .attr('d', path)
+      .attr('clip-path', 'url(#clip)')
+      .attr('fill', 'none')
+      .attr('stroke', '#666')
+      .attr('stroke-width', '0.5')
+      .attr('stroke-dasharray', '2,2');
+  }
   
   // Load and process all map data
   for (const dataset of datasets) {
@@ -75,8 +90,8 @@ export async function generateMap(options) {
       .attr('d', path)
       .attr('clip-path', 'url(#clip)')
       .attr('fill', 'none')
-      .attr('stroke', 'black')
-      .attr('stroke-width', '1');
+      .attr('stroke', styles.linecolor)
+      .attr('stroke-width', styles.linethickness);
   }
   
   // Get SVG content and save to file
